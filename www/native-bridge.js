@@ -163,6 +163,22 @@
   try { if (typeof MEVENTS !== 'undefined') strip(MEVENTS); } catch (e) {}
 })();
 
+/* ---------- App版UIクリーンアップ: サイト側クロームを除去 ----------
+ * Web版ページのヘッダー(Noe結婚設計室ロゴ+サイトナビ)・関連リンク集・
+ * フッターは、App内では飛び先が無くブランド表示も不要なため丸ごと外す。
+ * ゲームの説明文(nm-about の本文セクション)は残す。Web版は無改変。
+ */
+(function () {
+  'use strict';
+  function clean() {
+    ['.nm-head', '.nm-crumb', '.nm-rel', '.nm-foot'].forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) { el.remove(); });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', clean);
+  else clean();
+})();
+
 /* ---------- App版モード: ゲーム開始時に appMode を立てる ----------
  * 本体には App版専用イベント(app_* )が appMode ゲート付きで入っている。
  * Web版ではこのブリッジが無いため一切発火しない。App版では startGame を
