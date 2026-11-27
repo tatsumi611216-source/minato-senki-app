@@ -179,6 +179,21 @@
   else clean();
 })();
 
+/* ---------- App版スクロール: 選択のたびに画面トップへ戻す ----------
+ * Web版はページ内スクロールのまま。App版では一手を選んだら次の画面を
+ * 先頭から読めるよう、アクション/イベント選択のクリック後に最上部へ戻す。
+ */
+(function () {
+  'use strict';
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest && ev.target.closest('[data-a], #ev0, #ev1');
+    if (!t) return;
+    setTimeout(function () {
+      try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+    }, 60);
+  }, true);
+})();
+
 /* ---------- App版モード: ゲーム開始時に appMode を立てる ----------
  * 本体には App版専用イベント(app_* )が appMode ゲート付きで入っている。
  * Web版ではこのブリッジが無いため一切発火しない。App版では startGame を
